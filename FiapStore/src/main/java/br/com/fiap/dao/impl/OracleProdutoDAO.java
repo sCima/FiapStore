@@ -53,7 +53,7 @@ public class OracleProdutoDAO implements ProdutoDAO {
 
 		try {
 			conexao = ConnectionFactory.getInstance().getConnection();
-			String sql = "UPDATE TB_PRODUTO SET NOME_PRODUTO = ?, QUANTIDADE = ?, VALOR = ?, DT_FABRICACAO = ?, ID_CATEGORIA = ? WHERE ID_PRODUTO = ?";
+			String sql = "UPDATE TB_PRODUTO SET NOME_PRODUTO = ?, QUANTIDADE = ?, VALOR = ?, DT_FABRICACAO = ?, ID_CATEGORIA = ?, ID_MARCA = ? WHERE ID_PRODUTO = ?";
 			stmt = conexao.prepareStatement(sql);
 			stmt.setString(1, produto.getNome());
 			stmt.setInt(2, produto.getQuantidade());
@@ -61,7 +61,9 @@ public class OracleProdutoDAO implements ProdutoDAO {
 			java.sql.Date data = new java.sql.Date(produto.getDataFabricacao().getTimeInMillis());
 			stmt.setDate(4, data);
 			stmt.setInt(5, produto.getCategoria().getCodigo());
-			stmt.setInt(6, produto.getCodigo());
+			stmt.setInt(6, produto.getMarca().getId());
+			stmt.setInt(7, produto.getCodigo());
+			
 
 			stmt.execute();
 		} catch (SQLException e) {

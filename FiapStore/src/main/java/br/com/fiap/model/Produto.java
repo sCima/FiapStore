@@ -11,6 +11,15 @@ public class Produto {
 	private int quantidade;
 	private Categoria categoria;
 	private Marca marca;
+	private String detalhes;
+
+	public String getDetalhes() {
+		return detalhes;
+	}
+
+	public void setDetalhes(String detalhes) {
+		this.detalhes = detalhes;
+	}
 
 	public Marca getMarca() {
 		return marca;

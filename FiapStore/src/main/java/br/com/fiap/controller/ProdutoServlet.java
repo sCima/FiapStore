@@ -70,7 +70,22 @@ public class ProdutoServlet extends HttpServlet {
 		case "abrir-form-edicao":
 			abrirFormEdicao(request, response);
 			break;
+		case "abrir-form-detalhes":
+			abrirFormDetalhes(request,response);
+			break;
 		}
+	}
+
+	private void abrirFormDetalhes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("codigo"));
+		Produto produto = dao.buscar(id);
+		Marca marca = marcaDao.buscar(id);
+		request.setAttribute("marca", marca);
+		request.setAttribute("produto", produto);
+		carregarOpcoesCategoria(request);
+		carregarOpcoesMarca(request);
+		request.getRequestDispatcher("detalhe.jsp").forward(request, response);
+		
 	}
 
 	private void abrirFormCadastro(HttpServletRequest request, HttpServletResponse response)
@@ -104,7 +119,9 @@ public class ProdutoServlet extends HttpServlet {
 
 	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Produto> lista = dao.listar();
+		List<Marca> marca = marcaDao.listar();
 		request.setAttribute("produtos", lista);
+		request.setAttribute("marca", marca);
 		request.getRequestDispatcher("lista-produto.jsp").forward(request, response);
 	}
 
@@ -153,14 +170,15 @@ public class ProdutoServlet extends HttpServlet {
 			Categoria categoria = new Categoria();
 			categoria.setCodigo(codigoCategoria);
 			
-			Marca marca = new Marca();
-			marca.setId(idMarca);
+			Marca marca = marcaDao.buscar(idMarca);
+			System.out.println(idMarca);
+			System.out.println(marca.getNome());
 
 			Produto produto = new Produto(nome, preco, fabricacao, quantidade);
 			produto.setCategoria(categoria);
 			produto.setCodigo(codigo);
 			produto.setMarca(marca);
-			marcaDao.atualizar(marca);
+			
 			dao.atualizar(produto);
 
 			request.setAttribute("msg", "Produto atualizado!");
