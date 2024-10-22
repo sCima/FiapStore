@@ -3,9 +3,9 @@ drop sequence SQ_ID_CATEGORIA;
 drop sequence sq_id_usuario;
 DROP SEQUENCE SQ_ID_MARCA;
 drop table tb_produto cascade constraints;
-drop table tb_categoria;
-drop table tb_usuario;
-DROP TABLE TB_MARCA;
+drop table tb_categoria cascade constraints;
+drop table tb_usuario cascade constraints;
+DROP TABLE TB_MARCA cascade constraints;
 drop trigger tr_ins_usuario;
 drop trigger TR_INS_CATEGORIA;
 drop trigger TR_INS_produto;
@@ -21,6 +21,13 @@ create table tb_categoria(
 id_categoria number not null primary key,
 nome_categoria varchar2(45));
 
+CREATE TABLE TB_MARCA (
+    ID_MARCA NUMBER NOT NULL PRIMARY KEY,
+    NOME_MARCA VARCHAR2(100),
+    PAIS_ORIGEM VARCHAR2(100),
+    DESCRICAO VARCHAR2(255)
+);
+
 create table tb_produto (
 id_produto number not null primary key,
 nome_produto varchar2(100),
@@ -32,12 +39,7 @@ id_marca number,
 foreign key (id_categoria) references tb_categoria(id_categoria),
 foreign key (id_marca) references tb_marca(id_marca));
 
-CREATE TABLE TB_MARCA (
-    ID_MARCA NUMBER NOT NULL PRIMARY KEY,
-    NOME_MARCA VARCHAR2(100),
-    PAIS_ORIGEM VARCHAR2(100),
-    DESCRICAO VARCHAR2(255)
-);
+
 
 create sequence SQ_ID_PRODUTO start with 1 INCREMENT by 1;
 create sequence SQ_ID_CATEGORIA start with 1 INCREMENT by 1;
@@ -92,8 +94,3 @@ INSERT INTO TB_MARCA (NOME_MARCA, PAIS_ORIGEM, DESCRICAO) VALUES ('Ardidas', 'Al
 INSERT INTO TB_MARCA (NOME_MARCA, PAIS_ORIGEM, DESCRICAO) VALUES ('Poma', 'Alemanha', 'Marca de vestuário e esportes');
 
 COMMIT;
-
-
-INSERT INTO TB_PRODUTO (NOME_PRODUTO, QUANTIDADE, VALOR, DT_FABRICACAO, ID_CATEGORIA, ID_MARCA) VALUES ('Teste', 1, 5, null, 1, 1);
-
-desc tb_produto;
